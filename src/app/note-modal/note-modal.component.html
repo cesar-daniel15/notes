@@ -1,11 +1,10 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>{{ task['name'] }}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="closeModal()">Fechar</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-            <ion-button color="danger" (click)="closeModal()">Apagar</ion-button>
+            <ion-button color="danger" (click)="deleteNote()">Apagar</ion-button>
         </ion-buttons>
     </ion-toolbar>
     </ion-header>
@@ -20,15 +19,15 @@
         <ion-item>
             <ion-label>Estado</ion-label>
                 <ion-select aria-label="state" interface="popover" placeholder="{{ task['state'] }}" >
-                    <ion-select-option value="done">To Do</ion-select-option>
-                    <ion-select-option value="todo">Done</ion-select-option>
+                    <ion-select-option value="Todo">To Do</ion-select-option>
+                    <ion-select-option value="Done">Done</ion-select-option>
                 </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Prioridade</ion-label>
                 <ion-select aria-label="state" interface="popover" placeholder="{{ task['priority'] }}" >
-                    <ion-select-option value="normal">Normal</ion-select-option>
-                    <ion-select-option value="crityc">Critica</ion-select-option>
+                    <ion-select-option value="Normal">Normal</ion-select-option>
+                    <ion-select-option value="Critical">Critica</ion-select-option>
                 </ion-select>
         </ion-item>
     </ion-list>

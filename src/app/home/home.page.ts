@@ -8,39 +8,47 @@ import { NoteModalComponent } from '../note-modal/note-modal.component';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  
- // Array de tarefas
-tasks: any[] = [
-  {
-    "name" : "Limpar a casa",
-    "state" : "Todo",
-    "priority": "Normal"
-  },
-  {
-    "name" : "Limpar carro",
-    "state" : "Todo",
-    "priority": "Normal"
-  }
-];
+  // Valor default da prioridade
+  selectedSegment: string = 'Todo';
 
-constructor(private modalCtrl: ModalController) {}
-
-    async openNoteModal(task: String){
-      const modal = await this.modalCtrl.create({
-        component: NoteModalComponent,
-        backdropDismiss: false,
-        componentProps: { task: task },  // Passa a task como um parametro
-      });
-      
-      modal.onWillDismiss().then((detail) => {
-        if (detail.role === 'confirm') {
-          // Aqui você pode capturar a tarefa editada ou confirmada
-          console.log(`Tarefa confirmada: ${detail.data}`);
-        }
-      });
-  
-      return await modal.present();
+  // Array de tarefas com estado e prioridade
+  tasks: any[] = [
+    {
+      name: 'Limpar a casa',
+      state: 'Todo',
+      priority: 'Normal'
+    },
+    {
+      name: 'Limpar carro',
+      state: 'Done',
+      priority: 'Normal'
     }
+  ];
+
+  constructor(private modalCtrl: ModalController) {}
+
+  async openNoteModal(task: string) {
+    const modal = await this.modalCtrl.create({
+      component: NoteModalComponent,
+      backdropDismiss: false,
+      componentProps: { task: task }  // Passa a tarefa como uma propriedade
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data?.role === 'delete') {
+        this.deleteTask(task);
+      }
+    });
+    await modal.present();
   }
 
+  // Metodo para apagar tarefa
+  deleteTask(taskToDelete: any) {
+    this.tasks = this.tasks.filter(task => task !== taskToDelete);
+  }
 
+  // Metodo para retornar tarefas filtradas
+  getFilteredTasks() {
+    return this.tasks.filter(task => task.state === this.selectedSegment);
+  }
+}

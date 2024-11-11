@@ -28,6 +28,12 @@ export class NoteModalComponent implements OnInit {
     });
   }
 
+  deleteNote() {
+    this.modalCtrl.dismiss({
+      role: 'delete'
+    });
+  }
+
   confirm() {
     this.modalCtrl.dismiss({
       role: 'confirm',

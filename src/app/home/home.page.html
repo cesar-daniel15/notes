@@ -1,3 +1,4 @@
+<!-- Header -->
 <ion-header>
   <ion-toolbar>
     <div class="header-content">
@@ -6,21 +7,25 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- Content -->
 <ion-content>
 
-  <ion-segment value="default">
-    <ion-segment-button value="default">
+  <!-- Segmento para filtrar as tarefas -->
+  <ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment-button value="Todo">
       <ion-label>To Do</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="segment">
+    <ion-segment-button value="Done">
       <ion-label>Done</ion-label>
     </ion-segment-button>
   </ion-segment>
-
-  <ion-item *ngFor="let task of tasks" (click)="openNoteModal(task)">
-    <ion-label>{{ task ['name'] }}</ion-label>
+  
+  <!-- Lista de tarefas filtradas -->
+  <ion-item *ngFor="let task of getFilteredTasks()" (click)="openNoteModal(task)">
+    <ion-label>{{ task.name }}</ion-label>
   </ion-item>
 
+  <!-- Botun para adicionar nova tarefa -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
@@ -29,9 +34,9 @@
 
 </ion-content>
 
+<!-- Footer -->
 <ion-footer>
   <ion-toolbar class="ion-text-center">
     <ion-title style="font-size: 15px;">Notes 2024</ion-title>
   </ion-toolbar>
 </ion-footer>
-

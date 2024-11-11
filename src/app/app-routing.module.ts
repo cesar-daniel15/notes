@@ -8,9 +8,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+    loadChildren: () => import('./intro/intro.module').then(m => m.IntroPageModule) // Define IntroPage como inicial
+  }
 ];
 
 @NgModule({
