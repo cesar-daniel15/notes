@@ -1,14 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, NavParams } from '@ionic/angular';
+
+// Defina o tipo de 'task'
+interface Task {
+  name: string;
+  state: string,
+  priority: string
+}
 
 @Component({
-  selector: 'app-note-modal',
+  selector: 'app-notemodal',
   templateUrl: './note-modal.component.html',
   styleUrls: ['./note-modal.component.scss'],
 })
-export class NoteModalComponent  implements OnInit {
+export class NoteModalComponent implements OnInit {
 
-  constructor() { }
+  task: Task = { name: "", state: "", priority:"" };  
 
-  ngOnInit() {}
+  constructor(private navParams: NavParams, private modalCtrl: ModalController) {}
 
+  ngOnInit() {
+  }
+
+  closeModal() {
+    this.modalCtrl.dismiss({
+      role: 'cancel'
+    });
+  }
+
+  confirm() {
+    this.modalCtrl.dismiss({
+      role: 'confirm',
+      data: this.task  
+    });
+  }
 }

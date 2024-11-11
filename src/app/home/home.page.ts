@@ -10,11 +10,17 @@ import { NoteModalComponent } from '../note-modal/note-modal.component';
 export class HomePage {
   
  // Array de tarefas
-tasks: string[] = [
-  'Levar o carro à inspeção',
-  'Fazer compras no supermercado',
-  'Estudar para o exame',
-  'Limpar a casa',
+tasks: any[] = [
+  {
+    "name" : "Limpar a casa",
+    "state" : "Todo",
+    "priority": "Normal"
+  },
+  {
+    "name" : "Limpar carro",
+    "state" : "Todo",
+    "priority": "Normal"
+  }
 ];
 
 constructor(private modalCtrl: ModalController) {}
@@ -22,14 +28,18 @@ constructor(private modalCtrl: ModalController) {}
     async openNoteModal(task: String){
       const modal = await this.modalCtrl.create({
         component: NoteModalComponent,
+        backdropDismiss: false,
+        componentProps: { task: task },  // Passa a task como um parametro
       });
-      modal.present();
+      
+      modal.onWillDismiss().then((detail) => {
+        if (detail.role === 'confirm') {
+          // Aqui você pode capturar a tarefa editada ou confirmada
+          console.log(`Tarefa confirmada: ${detail.data}`);
+        }
+      });
   
-      const { data, role } = await modal.onWillDismiss();
-  
-      if (role === 'confirm') {
-       // this.message = `Hello, ${data}!`;
-      }
+      return await modal.present();
     }
   }
 

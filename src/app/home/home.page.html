@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center">
-      As minhas notas
-    </ion-title>
+    <div class="header-content">
+      <ion-title class="ion-text-center">As minhas notas</ion-title>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -18,7 +18,7 @@
   </ion-segment>
 
   <ion-item *ngFor="let task of tasks" (click)="openNoteModal(task)">
-    <ion-label>{{ task }}</ion-label>
+    <ion-label>{{ task ['name'] }}</ion-label>
   </ion-item>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
@@ -28,3 +28,10 @@
   </ion-fab>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="ion-text-center">
+    <ion-title style="font-size: 15px;">Notes 2024</ion-title>
+  </ion-toolbar>
+</ion-footer>
+

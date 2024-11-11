@@ -1,19 +1,39 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Detalhes da Tarefa</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>Fechar</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+        <ion-title>{{ task['name'] }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Fechar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button color="danger" (click)="closeModal()">Apagar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    </ion-header>
 
 <ion-content>
-  <div>
-    
     <ion-item>
-      <ion-textarea>{{ task }}</ion-textarea>
+        <ion-textarea placeholder="Edite aqui a sua task" [autoGrow]="true" value="{{ task['name'] }}">
+        </ion-textarea>
     </ion-item>
 
-    <ion-button expand="full" color="primary">Gravar</ion-button>
-  </div>
+    <ion-list>
+        <ion-item>
+            <ion-label>Estado</ion-label>
+                <ion-select aria-label="state" interface="popover" placeholder="{{ task['state'] }}" >
+                    <ion-select-option value="done">To Do</ion-select-option>
+                    <ion-select-option value="todo">Done</ion-select-option>
+                </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Prioridade</ion-label>
+                <ion-select aria-label="state" interface="popover" placeholder="{{ task['priority'] }}" >
+                    <ion-select-option value="normal">Normal</ion-select-option>
+                    <ion-select-option value="crityc">Critica</ion-select-option>
+                </ion-select>
+        </ion-item>
+    </ion-list>
 </ion-content>
+
+<ion-footer>
+    <ion-button expand="full" color="primary" (click)="confirm()">Confirmar</ion-button>
+</ion-footer>
