@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NoteModalComponent } from '../note-modal/note-modal.component';
+import { NoteCreateModalComponent } from '../note-create-modal/note-create-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +41,21 @@ export class HomePage {
       }
     });
     await modal.present();
+  }
+
+  async openCreateModal() {
+    const modal = await this.modalCtrl.create({
+      component: NoteCreateModalComponent,
+      backdropDismiss: false,
+      componentProps: {}
+      });
+
+      await modal.present();
+
+      const { data, role } = await modal.onWillDismiss();
+      if (data && data.message) {
+      
+      }
   }
 
   // Metodo para apagar tarefa

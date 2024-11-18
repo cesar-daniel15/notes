@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { NoteModalComponent } from '../note-modal/note-modal.component';
+import { NoteCreateModalComponent } from '../note-create-modal/note-create-modal.component';
 
 
 @NgModule({
@@ -15,6 +16,6 @@ import { NoteModalComponent } from '../note-modal/note-modal.component';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, NoteModalComponent]
+  declarations: [HomePage, NoteModalComponent, NoteCreateModalComponent]
 })
 export class HomePageModule {}
