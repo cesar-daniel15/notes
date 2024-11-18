@@ -3,46 +3,79 @@ import { ModalController } from '@ionic/angular';
 import { NoteModalComponent } from '../note-modal/note-modal.component';
 import { NoteCreateModalComponent } from '../note-create-modal/note-create-modal.component';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LoadingController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';
+
+enum State {
+  TODO = 'TODO',
+  DONE = 'DONE',
+}
+
+enum Priority {
+  LOW = 'LOW',
+  NORMAL = 'NORMAL',
+  CRITICAL = 'CRITICAL',
+}
+
+interface Note {
+  description: string;
+  state: State;
+  priority: Priority;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  // Valor default da prioridade
+
+  apiUrl: string = "https://mobile-api-one.vercel.app/api";
+  name: string = "cesar.daniel@ipvc.pt";
+  password: string = "uVt(D!u3";
+
   selectedSegment: string = 'Todo';
+  notes: any[] = [];
 
-  // Array de tarefas com estado e prioridade
-  tasks: any[] = [
-    {
-      name: 'Limpar a casa',
-      state: 'Todo',
-      priority: 'Normal'
-    },
-    {
-      name: 'Limpar carro',
-      state: 'Done',
-      priority: 'Normal'
+  constructor(private modalCtrl: ModalController, private loadingCtrl: LoadingController, private http: HttpClient) {}
+
+  // Funcao para obter todas as notas existentes
+  async getNotes() {
+    const loading = await this.showLoading();
+
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${btoa(`${this.name}:${this.password}`)}`,
+    });
+
+    try {
+      this.notes = await firstValueFrom(this.http.get<Note[]>(`${this.apiUrl}/notes`, { headers }));
+      loading.dismiss();
+      if(this.notes.length == 0) {
+        await this.presentToast(`There is no notes available 😥`, 'warning');
+      }
+      else {
+        await this.presentToast(`Success getting ${this.notes.length} notes 🚀`, 'success');
+      }
+      
+    } catch (error : any) {
+      loading.dismiss();
+      await this.presentToast(error.error, 'danger');
     }
-  ];
+  }
 
-  constructor(private modalCtrl: ModalController) {}
-
+  // Funcao apra abrir o modal da nota
   async openNoteModal(task: string) {
     const modal = await this.modalCtrl.create({
       component: NoteModalComponent,
       backdropDismiss: false,
-      componentProps: { task: task }  // Passa a tarefa como uma propriedade
+      componentProps: { task: task } 
     });
 
-    modal.onDidDismiss().then((result) => {
-      if (result.data?.role === 'delete') {
-        this.deleteTask(task);
-      }
-    });
     await modal.present();
   }
 
+  // Funcao para abrir o modal para criar
   async openCreateModal() {
     const modal = await this.modalCtrl.create({
       component: NoteCreateModalComponent,
@@ -54,17 +87,35 @@ export class HomePage {
 
       const { data, role } = await modal.onWillDismiss();
       if (data && data.message) {
-      
+        this.getNotes();
       }
   }
+  
+  // Mostra animacao de login
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading ...',
+      duration: 3000,
+    });
 
-  // Metodo para apagar tarefa
-  deleteTask(taskToDelete: any) {
-    this.tasks = this.tasks.filter(task => task !== taskToDelete);
+    loading.present();
+    return loading;
   }
 
-  // Metodo para retornar tarefas filtradas
+  // Mostra mensagem de feedback
+  async presentToast(message: string, color: string = 'success') {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;  
+    toast.color = color;     
+    toast.duration = 2000;  
+    
+    document.body.appendChild(toast);  
+    await toast.present();
+  }
+
+   // Metodo para retornar tarefas filtradas
   getFilteredTasks() {
-    return this.tasks.filter(task => task.state === this.selectedSegment);
+    return this.notes.filter(task => task.state === this.selectedSegment);
   }
+  
 }

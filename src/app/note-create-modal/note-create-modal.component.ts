@@ -1,5 +1,27 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { NoteModalComponent } from '../note-modal/note-modal.component';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LoadingController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';
+
+enum State {
+  TODO = 'TODO',
+  DONE = 'DONE',
+}
+
+enum Priority {
+  LOW = 'LOW',
+  NORMAL = 'NORMAL',
+  CRITICAL = 'CRITICAL',
+}
+
+interface Note {
+  description: string;
+  state: State;
+  priority: Priority;
+}
 
 @Component({
   selector: 'app-note-create-modal',
@@ -7,18 +29,71 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./note-create-modal.component.scss'],
 })
 export class NoteCreateModalComponent {
-  note = {
-    name: '',
-    priority: 'Normal',
-  };
 
-  constructor(private modalCtrl: ModalController) {}
+  apiUrl: string = "https://mobile-api-one.vercel.app/api";
+  name: string = "cesar.daniel@ipvc.pt";
+  password: string = "uVt(D!u3";
 
-  cancel() {
-    this.modalCtrl.dismiss(null, 'cancel');
+  selectedSegment: string = 'Todo';
+  notes: any[] = [];
+
+  description: string = '';  
+  selectedState: State = State.TODO;  
+  selectedPriority: Priority = Priority.NORMAL;  
+
+  constructor(private modalCtrl: ModalController, private loadingCtrl: LoadingController, private http: HttpClient) {}
+
+  // Funcao para cria uma nova nota -> POST: /notes
+  async postNote() {
+    const loading = await this.showLoading();
+
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${btoa(`${this.name}:${this.password}`)}`,
+    });
+
+    var newNote = {
+      description: "ESTA NOTA É NOVA!",
+      state: State.TODO,
+      priority: Priority.NORMAL
+    }
+
+    try {
+      await firstValueFrom(this.http.post<Note[]>(`${this.apiUrl}/notes`, newNote , { headers }));
+      loading.dismiss();
+
+      await this.presentToast(`Note successfully created 🚀`, 'success');
+      
+    } catch (error : any) {
+      loading.dismiss();
+      await this.presentToast(error.error, 'danger');
+    }
+  }
+  
+ // Mostra animacao de login
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Loading ...',
+      duration: 3000,
+    });
+
+    loading.present();
+    return loading;
   }
 
-  confirm() {
-    this.modalCtrl.dismiss({ note: this.note }, 'save');
+  // Mostra mensagem de feedback
+  async presentToast(message: string, color: string = 'success') {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;  
+    toast.color = color;     
+    toast.duration = 2000;  
+    
+    document.body.appendChild(toast);  
+    await toast.present();
+  }
+  
+  
+  // Função para fechar o modal
+  dismissModal() {
+    this.modalCtrl.dismiss();
   }
 }

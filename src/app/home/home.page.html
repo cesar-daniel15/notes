@@ -10,6 +10,10 @@
 <!-- Content -->
 <ion-content>
 
+  <div class="center-button-wrapper">
+    <ion-button (click)="showLoading()">Show Loading</ion-button>
+  </div>
+
   <!-- Segmento para filtrar as tarefas -->
   <ion-segment [(ngModel)]="selectedSegment">
     <ion-segment-button value="Todo">

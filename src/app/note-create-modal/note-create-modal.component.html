@@ -1,29 +1,43 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Criar Nova Nota</ion-title>
+    <ion-title>Criar Nota</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cancel()">Cancelar</ion-button>
+      <ion-button (click)="dismissModal()">Fechar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-item>
-    <ion-label position="floating">Nome da Nota</ion-label>
-    <ion-input [(ngModel)]="note.name"></ion-input>
+    <ion-label position="floating">Descrição</ion-label>
+    <ion-input [(ngModel)]="description" placeholder="Digite a descrição da nota"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Estado</ion-label>
+    <ion-select [(ngModel)]="selectedState">
+      <ion-select-option value="TODO">To Do</ion-select-option>
+      <ion-select-option value="DONE">Done</ion-select-option>
+    </ion-select>
   </ion-item>
 
   <ion-item>
     <ion-label>Prioridade</ion-label>
-    <ion-select [(ngModel)]="note.priority">
-      <ion-select-option value="Normal">Normal</ion-select-option>
-      <ion-select-option value="Critica">Alta</ion-select-option>
+    <ion-select [(ngModel)]="selectedPriority">
+      <ion-select-option value="LOW">Baixa</ion-select-option>
+      <ion-select-option value="NORMAL">Normal</ion-select-option>
+      <ion-select-option value="CRITICAL">Crítica</ion-select-option>
     </ion-select>
   </ion-item>
 
 </ion-content>
 
+  <ion-footer>
 
-<ion-footer>
-  <ion-button expand="block" color="success" (click)="confirm()">Guardar</ion-button>
-</ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="postNote()">Guardar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    
+  </ion-footer>
