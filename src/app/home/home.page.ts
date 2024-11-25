@@ -18,10 +18,15 @@ enum Priority {
   CRITICAL = 'CRITICAL',
 }
 
-interface Note {
-  description: string;
-  state: State;
-  priority: Priority;
+interface Note{ 
+  id: string; 
+  description: string; 
+  state: State; 
+  priority: Priority; 
+  createdBy: string; 
+  createdAt: string; 
+  updatedBy: string | null; 
+  updatedAt: string | null; 
 }
 
 @Component({
@@ -35,7 +40,7 @@ export class HomePage {
   name: string = "cesar.daniel@ipvc.pt";
   password: string = "uVt(D!u3";
 
-  selectedSegment: string = 'Todo';
+  selectedSegment: string = State.TODO;
   notes: any[] = [];
 
   constructor(private modalCtrl: ModalController, private loadingCtrl: LoadingController, private http: HttpClient) {}
@@ -65,11 +70,11 @@ export class HomePage {
   }
 
   // Funcao apra abrir o modal da nota
-  async openNoteModal(task: string) {
+  async openNoteModal(note: Note) {
     const modal = await this.modalCtrl.create({
       component: NoteModalComponent,
       backdropDismiss: false,
-      componentProps: { task: task } 
+      componentProps: { note: note } 
     });
 
     await modal.present();
@@ -87,7 +92,7 @@ export class HomePage {
 
       const { data, role } = await modal.onWillDismiss();
       if (data && data.message) {
-        this.getNotes();
+        await this.getNotes();
       }
   }
   
@@ -114,8 +119,8 @@ export class HomePage {
   }
 
    // Metodo para retornar tarefas filtradas
-  getFilteredTasks() {
-    return this.notes.filter(task => task.state === this.selectedSegment);
+  getFilteredNotes() {
+    return this.notes.filter(note => note.state === this.selectedSegment);
   }
   
 }

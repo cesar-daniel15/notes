@@ -9,24 +9,23 @@
 
 <ion-content>
   <ion-item>
-    <ion-label position="floating">Descrição</ion-label>
-    <ion-input [(ngModel)]="description" placeholder="Digite a descrição da nota"></ion-input>
+    <ion-input [(ngModel)]="description" placeholder="Escreva o nome da nota que pretende criar"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label>Estado</ion-label>
     <ion-select [(ngModel)]="selectedState">
-      <ion-select-option value="TODO">To Do</ion-select-option>
-      <ion-select-option value="DONE">Done</ion-select-option>
+      <ion-select-option [value]="State.TODO">To Do</ion-select-option>
+      <ion-select-option [value]="State.DONE">Done</ion-select-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
     <ion-label>Prioridade</ion-label>
     <ion-select [(ngModel)]="selectedPriority">
-      <ion-select-option value="LOW">Baixa</ion-select-option>
-      <ion-select-option value="NORMAL">Normal</ion-select-option>
-      <ion-select-option value="CRITICAL">Crítica</ion-select-option>
+      <ion-select-option [value]="Priority.LOW">Baixa</ion-select-option>
+      <ion-select-option [value]="Priority.NORMAL">Normal</ion-select-option>
+      <ion-select-option [value]="Priority.CRITICAL">Crítica</ion-select-option>
     </ion-select>
   </ion-item>
 

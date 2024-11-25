@@ -1,5 +1,6 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar> 
+        <ion-title>{{ note.description }}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="closeModal()">Fechar</ion-button>
         </ion-buttons>
@@ -7,32 +8,32 @@
             <ion-button color="danger" (click)="deleteNote()">Apagar</ion-button>
         </ion-buttons>
     </ion-toolbar>
-    </ion-header>
+</ion-header>
 
 <ion-content>
     <ion-item>
-        <ion-textarea placeholder="Edite aqui a sua task" [autoGrow]="true" value="{{ task['name'] }}">
-        </ion-textarea>
+        <ion-textarea placeholder="Edite o nome da nota" [autoGrow]="true" [(ngModel)]="description"></ion-textarea>
     </ion-item>
 
     <ion-list>
         <ion-item>
             <ion-label>Estado</ion-label>
-                <ion-select aria-label="state" interface="popover" placeholder="{{ task['state'] }}" >
-                    <ion-select-option value="Todo">To Do</ion-select-option>
-                    <ion-select-option value="Done">Done</ion-select-option>
-                </ion-select>
+            <ion-select aria-label="state" interface="popover" [(ngModel)]="selectedState">
+                <ion-select-option [value]="State.TODO">To Do</ion-select-option>
+                <ion-select-option [value]="State.DONE">Done</ion-select-option>
+            </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Prioridade</ion-label>
-                <ion-select aria-label="state" interface="popover" placeholder="{{ task['priority'] }}" >
-                    <ion-select-option value="Normal">Normal</ion-select-option>
-                    <ion-select-option value="Critical">Critica</ion-select-option>
-                </ion-select>
+            <ion-select aria-label="priority" interface="popover" [(ngModel)]="selectedPriority">
+                <ion-select-option [value]="Priority.LOW">Baixa</ion-select-option>
+                <ion-select-option [value]="Priority.NORMAL">Normal</ion-select-option>
+                <ion-select-option [value]="Priority.CRITICAL">Critica</ion-select-option>
+            </ion-select>
         </ion-item>
     </ion-list>
 </ion-content>
 
 <ion-footer>
-    <ion-button expand="block" color="success" (click)="confirm()">Guardar</ion-button>
+    <ion-button expand="block" (click)="confirm()">Guardar</ion-button>
 </ion-footer>

@@ -17,10 +17,15 @@ enum Priority {
   CRITICAL = 'CRITICAL',
 }
 
-interface Note {
-  description: string;
-  state: State;
-  priority: Priority;
+interface Note{ 
+  id: string; 
+  description: string; 
+  state: State; 
+  priority: Priority; 
+  createdBy: string; 
+  createdAt: string; 
+  updatedBy: string | null; 
+  updatedAt: string | null; 
 }
 
 @Component({
@@ -28,6 +33,7 @@ interface Note {
   templateUrl: './note-create-modal.component.html',
   styleUrls: ['./note-create-modal.component.scss'],
 })
+
 export class NoteCreateModalComponent {
 
   apiUrl: string = "https://mobile-api-one.vercel.app/api";
@@ -37,9 +43,12 @@ export class NoteCreateModalComponent {
   selectedSegment: string = 'Todo';
   notes: any[] = [];
 
-  description: string = '';  
-  selectedState: State = State.TODO;  
+  description: string = '';
+  selectedState: State = State.TODO;
   selectedPriority: Priority = Priority.NORMAL;  
+
+  State = State; 
+  Priority = Priority
 
   constructor(private modalCtrl: ModalController, private loadingCtrl: LoadingController, private http: HttpClient) {}
 
@@ -52,9 +61,9 @@ export class NoteCreateModalComponent {
     });
 
     var newNote = {
-      description: "ESTA NOTA É NOVA!",
-      state: State.TODO,
-      priority: Priority.NORMAL
+      description: this.description,
+      state: this.selectedState,
+      priority: this.selectedPriority,
     }
 
     try {
