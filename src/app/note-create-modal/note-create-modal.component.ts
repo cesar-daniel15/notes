@@ -71,6 +71,7 @@ export class NoteCreateModalComponent {
       loading.dismiss();
 
       await this.presentToast(`Note successfully created 🚀`, 'success');
+      this.dismissModal();
       
     } catch (error : any) {
       loading.dismiss();

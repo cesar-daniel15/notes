@@ -68,7 +68,8 @@ export class NoteModalComponent implements OnInit {
       await firstValueFrom(this.http.put<Note>(`${this.apiUrl}/notes/${this.note.id}`, updatedNote, { headers }));
       loading.dismiss();
 
-      await this.presentToast(`Note successfully created 🚀`, 'success');
+      await this.presentToast(`Note successfully updates 🚀`, 'success');
+      this.dismissModal();
       
     } catch (error : any) {
       loading.dismiss();
@@ -130,4 +131,7 @@ export class NoteModalComponent implements OnInit {
     await toast.present();
   }
   
+  dismissModal() {
+    this.modalCtrl.dismiss();
+  }
 }
